@@ -1,0 +1,7 @@
+## General
+.DS_Store
+.vscode
+
+## Temp file directories
+obj/
+build/
