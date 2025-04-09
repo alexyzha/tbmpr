@@ -1,0 +1,12 @@
+#pragma once
+#include <algorithm>
+#include <cctype>
+#include <cstdint>
+#include <fstream>
+#include <inttypes.h>
+#include <iostream>
+#include <sstream>
+#include <stdexcept>
+#include <stdlib.h>
+#include <string>
+#include <vector>
