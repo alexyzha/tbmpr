@@ -14,16 +14,20 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nano \
     pkg-config \
-    libgtk2.0-dev \
     libavcodec-dev \
     libavformat-dev \
     libswscale-dev \
+    libtbb2 \
+    libtbb-dev \
     libjpeg-dev \
     libpng-dev \
     libtiff-dev \
-    libopenexr-dev \
+    libcanberra-gtk-module \
+    libcanberra-gtk3-module \
     python3 \
     python3-pip \
+    python3-dev \
+    python3-numpy \
     locales \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -41,21 +45,12 @@ RUN git clone -q https://github.com/google/googletest.git /googletest \
     && rm -rf /googletest
 
 ## Install OpenCV
-ARG OPENCV_VERSION=4.8.0
-RUN git clone -b ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv.git /opencv && \
-    git clone -b ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv_contrib.git /opencv_contrib && \
-    mkdir -p /opencv/build && cd /opencv/build && \
-    cmake -D CMAKE_BUILD_TYPE=Release \
-          -D CMAKE_INSTALL_PREFIX=/usr/local \
-          -D WITH_CUDA=ON \
-          -D CUDA_ARCH_BIN=all \
-          -D OPENCV_EXTRA_MODULES_PATH=/opencv_contrib/modules \
-          -D WITH_CUBLAS=ON \
-          -D WITH_GTK=ON \
-          -D BUILD_EXAMPLES=OFF \
-          .. && \
-    make -j$(nproc) && make install && ldconfig && \
-    rm -rf /opencv /opencv_contrib
+RUN git clone https://github.com/opencv/opencv.git && \
+    cd /opencv && mkdir build && cd build && \
+    cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local .. && \
+    make -j"$(nproc)" && \
+    make install && \
+    rm -rf /opencv
 
 ## SETWD
 WORKDIR /src/
